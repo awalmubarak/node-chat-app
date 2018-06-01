@@ -5,11 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Chat App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
 </head>
 <body>
     <h3>Welcome to the chat app</h3>
-    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        socket.on('connect', ()=>{
+            console.log('Connection Established');      
+        });
+
+        socket.on('disconnect', () => {
+                console.log('Connection Lost');
+            });
+    </script>
 </body>
 </html>
