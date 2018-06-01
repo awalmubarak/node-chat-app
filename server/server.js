@@ -19,13 +19,10 @@ io.on('connection',(socket)=>{
 
     socket.on('createMessage', (message) => {
         console.log(message);
+        io.emit('newMessage', {from:message.from, text:message.text});
+
     });
 
-    socket.emit('newMessage', {
-        from: 'yhunng',
-        text: 'hello there boy',
-        createdAt: 1234
-    });
 
     socket.on('disconnect', () => {
         console.log('Connection was lost');
