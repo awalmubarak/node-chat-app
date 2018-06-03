@@ -63,7 +63,7 @@ jQuery('#message-form').on('submit', function(e){
     var messageTextBox = jQuery('[name=message]');
     e.preventDefault();
     socket.emit('createMessage', {
-        from: 'Borga', text: messageTextBox.val()
+         text: messageTextBox.val()
     }, ()=>{
         messageTextBox.val('');
     });
