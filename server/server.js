@@ -20,18 +20,26 @@ app.use(express.static(publicPath));
 io.on('connection',(socket)=>{
     console.log('Connection established');
 
+    socket.emit('ActiveGroups', users.getActiveRooms());
+
     socket.on('join',(params, callback)=>{
-        if(!isRealString(params.name) || !isRealString(params.room)){
+        var room = params.room;
+        if (params.selectRoom !=='') room =params.selectRoom;
+        if(!isRealString(params.name) || !isRealString(room)){
             return callback('Display name and Room name is reqired');
         }
         if (params.name.toLowerCase()==='admin') {
             return callback('Display name cannot be "Admin"');
         }
-        socket.join(params.room);
-        users.addUser(socket.id, params.name, params.room);
-        socket.emit('newMessage', generateMessage('Admin', `welcome to room '${params.room}'`));
-        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} just joined.`));
-        io.to(params.room).emit('updateUserList', users.getUserList(params.room));
+        var user = users.getUserByName(params.name.toLowerCase());
+        if (user && user.room === room.toLowerCase()) {
+            return callback(`Username "${params.name}" is taken in this room, please choose another name`);
+        }
+        socket.join(room.toLowerCase());
+        users.addUser(socket.id, params.name.toLowerCase(), room.toLowerCase());
+        socket.emit('newMessage', generateMessage('Admin', `welcome to room '${room}'`));
+        socket.broadcast.to(room.toLowerCase()).emit('newMessage', generateMessage('Admin', `${params.name} just joined.`));
+        io.to(room.toLowerCase()).emit('updateUserList', users.getUserList(room.toLowerCase()));
         callback();
     });
 

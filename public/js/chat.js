@@ -1,3 +1,4 @@
+
 var socket = io();
 
 function scrollToBottom() {
@@ -16,6 +17,8 @@ function scrollToBottom() {
 socket.on('connect', function () {
     console.log('Connection Established');
     var params = jQuery.deparam(window.location.search);
+    console.log(params);
+    
     socket.emit('join', params, function(err){
         if (err) {
             alert(err);

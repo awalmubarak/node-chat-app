@@ -6,6 +6,8 @@
     <title>Join | Max Chat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/libs/jquery.min.js"></script>
 </head>
 <body class="centered-form">
     <div class="centered-form__form">
@@ -21,10 +23,32 @@
                 <label for="room">Room Name</label>
                 <input type="text" name="room" id="room">
             </div>
+            <center><p>---OR---</p></center>
+            <div class="form-field">
+                <label for="room">Choose from active rooms</label>
+                <p id="selectRoom" class="form-field">
+                <select name="selectRoom" id="chooseRoom">
+                   <option value="">----</option>
+                </select>
+                </p>
+            </div>
             <div class="form-field">
                 <button type="submit">Join</button>
             </div>
         </form>
-    </div>  
+    </div> 
+
+    <script>
+        var socket = io();
+        socket.on('ActiveGroups', function(groups){
+            var select = jQuery('#chooseRoom');
+            groups.forEach(function(group) {
+                var option = jQuery('<option></option>').text(group);
+                option.attr('value', group);
+                select.append(option)
+            });
+            jQuery('#selectRoom').html(select);
+        });
+    </script>
 </body>
 </html>

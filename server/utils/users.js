@@ -1,3 +1,4 @@
+const _ = require('lodash');
 class Users{
     constructor(){
         this.users = [];
@@ -11,6 +12,15 @@ class Users{
 
     getUser(id) {
        return this.users.filter((user)=>user.id===id)[0];
+    }
+
+    getUserByName(name) {
+        return this.users.filter((user) => user.name === name)[0];
+    }
+
+    getActiveRooms() {
+        var rooms = this.users.map((user) => user.room);
+        return _.uniq(rooms);  
     }
 
     removeUser(id) {

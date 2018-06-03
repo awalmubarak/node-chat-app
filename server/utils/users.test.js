@@ -44,6 +44,21 @@ describe('Utils/Users', ()=>{
         expect(users.users.length).toBe(4);
     });
 
+    it('should get User by Name', () => {
+        var user = users.getUserByName('max');
+        expect(user).toBeTruthy();
+        expect(user.name).toBe('max');
+        expect(user.id).toBe(2);
+        expect(users.users.length).toBe(4);
+    });
+
+    it('should not get User by Name', () => {
+        var user = users.getUserByName('jill');
+        expect(user).toBeFalsy();
+        expect(users.users.length).toBe(4);
+    });
+
+
     it('should get users name list for gh room', () => {
         var userList = users.getUserList('gh');
         expect(userList).toEqual(['awal','muba']);
@@ -54,5 +69,11 @@ describe('Utils/Users', ()=>{
         var userList = users.getUserList('ng');
         expect(userList).toEqual([ 'max', 'love']);
         expect(userList.length).toBe(2);
+    });
+
+    it('should get all active rooms', () => {
+        var rooms = users.getActiveRooms();
+        expect(rooms).toEqual(['gh', 'ng']);
+        expect(rooms.length).toBe(2);
     });
 });
